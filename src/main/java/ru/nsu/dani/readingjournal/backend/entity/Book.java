@@ -21,7 +21,7 @@ public class Book {
     private Long bookId;
 
     @Column(name = "title")
-    @NotBlank
+    //@NotBlank
     @Getter @Setter
     private String title;
 
@@ -30,7 +30,7 @@ public class Book {
     private Date readDate;
 
     @Column(name = "rating")
-    @NotBlank
+    //@NotBlank
     @Getter @Setter
     private Integer rating;
 
@@ -43,7 +43,7 @@ public class Book {
     private Integer idInSeries;
 
     @ManyToOne
-    @JoinColumn(name = "series_id", nullable = false)
+    @JoinColumn(name = "series_id")
     @Getter @Setter
     private Series series;
 
