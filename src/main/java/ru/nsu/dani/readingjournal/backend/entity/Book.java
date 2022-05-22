@@ -3,6 +3,8 @@ package ru.nsu.dani.readingjournal.backend.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -18,6 +20,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
+    @Getter
     private Long bookId;
 
     @Column(name = "title")
@@ -56,6 +59,7 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Getter @Setter
     Set<Author> authors = new HashSet<>();
 
@@ -64,6 +68,7 @@ public class Book {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             mappedBy = "books"
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Getter @Setter
     Set<Genre> genres = new HashSet<>();
 

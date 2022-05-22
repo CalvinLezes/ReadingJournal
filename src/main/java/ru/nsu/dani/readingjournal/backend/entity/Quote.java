@@ -18,6 +18,7 @@ public class Quote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "quote_id")
+    @Getter
     private Long quoteId;
 
     @Column(name = "text")

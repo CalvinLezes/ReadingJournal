@@ -1,29 +1,30 @@
 package ru.nsu.dani.readingjournal.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.nsu.dani.readingjournal.backend.Service.GenreService;
-import ru.nsu.dani.readingjournal.backend.entity.Genre;
-import ru.nsu.dani.readingjournal.backend.repository.GenreRepository;
+import ru.nsu.dani.readingjournal.backend.response.GenreNameInfo;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/")
 public class GenreController {
-
+    private final GenreService genreService;
     @Autowired
-    GenreService genreService;
-
+    public GenreController(GenreService genreService) {
+        this.genreService = genreService;
+    }
     @GetMapping({"/genres"})
     public ResponseEntity<?> getAllGenres(){
-        List<Genre> response = genreService.getAllGenres();
-        return ResponseEntity.ok(response);
+        List<GenreNameInfo> genresResponses = genreService.getAllGenres();
+        if(genresResponses.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(genresResponses,HttpStatus.OK);
     }
 
     /*@PostMapping({"/genre"})

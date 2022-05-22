@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.nsu.dani.readingjournal.backend.entity.Genre;
 
 @Repository
-public interface GenreRepository extends JpaRepository<Genre,Long> {}
+public interface GenreRepository extends JpaRepository<Genre,Long> {
+    Genre findGenreByName(String name);
+}

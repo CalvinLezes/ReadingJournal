@@ -3,6 +3,8 @@ package ru.nsu.dani.readingjournal.backend.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -24,11 +26,6 @@ public class Author {
     @Getter @Setter
     @NotBlank
     private String name;
-
-    @Column(name = "surname")
-    @Getter @Setter
-    private String surname;
-
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
     @Getter @Setter
@@ -39,12 +36,22 @@ public class Author {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             mappedBy = "authors"
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Getter @Setter
     Set<Book> books = new HashSet<>();
 
     public Author(String name, String surname, Country country){
         this.name = name;
-        this.surname = surname;
         this.country = country;
+    }
+
+    public void addBook(Book book) {
+        this.books.add(book);
+        book.getAuthors().add(this);
+    }
+
+    public void removeBook(Book book) {
+        this.books.remove(book);
+        book.getAuthors().remove(this);
     }
 }
